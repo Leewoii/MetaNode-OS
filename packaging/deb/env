@@ -1,0 +1,15 @@
+APP_HOST=0.0.0.0
+APP_PORT=4310
+VITE_API_URL=http://localhost:4310
+OLLAMA_BASE_URL=http://127.0.0.1:11434/v1
+OLLAMA_DEFAULT_MODEL=llama3.1
+BARYON_STATE_FILE=/var/lib/frostbyte-control-plane/app-state.json
+WORKER_POLL_MS=2000
+
+# Optional:
+# DATABASE_URL=postgres://baryon:baryon@localhost:5432/baryon
+# OPENAI_API_KEY=
+# ANTHROPIC_API_KEY=
+# WHATSAPP_VERIFY_TOKEN=
+# AUTH_SECRET=change-me
+# CREDENTIAL_SECRET=change-me

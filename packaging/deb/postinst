@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+if ! getent group frostbyte >/dev/null; then
+  groupadd --system frostbyte
+fi
+
+if ! id frostbyte >/dev/null 2>&1; then
+  useradd --system --gid frostbyte --home-dir /var/lib/frostbyte-control-plane --shell /usr/sbin/nologin frostbyte
+fi
+
+mkdir -p /var/lib/frostbyte-control-plane /etc/frostbyte-control-plane
+chown -R frostbyte:frostbyte /var/lib/frostbyte-control-plane
+
+cd /opt/frostbyte-control-plane
+if [ ! -d node_modules ]; then
+  npm ci --omit=dev --workspaces --ignore-scripts
+fi
+chown -R frostbyte:frostbyte /opt/frostbyte-control-plane
+
+if command -v systemctl >/dev/null 2>&1; then
+  systemctl daemon-reload
+  systemctl enable frostbyte-api.service frostbyte-worker.service frostbyte-web.service >/dev/null 2>&1 || true
+fi
+
+exit 0

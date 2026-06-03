@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MetaNode OS Launcher</title>
+  </head>
+  <body>
+    <main class="launcher-shell">
+      <section class="status-panel">
+        <div class="brand-mark">M</div>
+        <p class="eyebrow">MetaNode OS</p>
+        <h1>Local runtime launcher</h1>
+        <p id="message" class="message">Checking access gate...</p>
+        <div class="status-row">
+          <span id="status-dot" class="status-dot"></span>
+          <strong id="status-text">Offline</strong>
+        </div>
+        <label class="license-field">
+          <span>User / license ID</span>
+          <input id="user-id-input" type="text" autocomplete="off" spellcheck="false" />
+        </label>
+        <div class="actions">
+          <button id="start-button" type="button">Start</button>
+          <button id="stop-button" type="button" class="secondary">Stop</button>
+        </div>
+      </section>
+      <section class="details-panel">
+        <h2>Runtime</h2>
+        <dl>
+          <div><dt>Core</dt><dd id="core-state">Not installed</dd></div>
+          <div><dt>Ollama</dt><dd id="ollama-state">Unknown</dd></div>
+          <div><dt>Ports</dt><dd>4310 API / 5173 Web / 11434 Ollama</dd></div>
+        </dl>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

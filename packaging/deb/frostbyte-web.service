@@ -1,0 +1,16 @@
+[Unit]
+Description=Frostbyte Control Plane Web
+After=network.target frostbyte-api.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/frostbyte-control-plane
+EnvironmentFile=-/etc/frostbyte-control-plane/env
+ExecStart=/usr/bin/npm --workspace apps/web run preview -- --host 0.0.0.0 --port 5173
+Restart=on-failure
+RestartSec=5
+User=frostbyte
+Group=frostbyte
+
+[Install]
+WantedBy=multi-user.target

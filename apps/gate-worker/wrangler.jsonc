@@ -1,0 +1,22 @@
+{
+  "name": "metanode-access-gate-frost",
+  "main": "src/index.ts",
+  "workers_dev": true,
+  "preview_urls": false,
+  "compatibility_date": "2026-06-03",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "kv_namespaces": [
+    {
+      "binding": "ACCESS_KV",
+      "id": "7d030d481c9f4383b1e579cc4e8eebaa"
+    }
+  ],
+  "vars": {
+    "GRANT_TTL_SECONDS": "900",
+    "DOWNLOAD_TOKEN_TTL_SECONDS": "300"
+  }
+}

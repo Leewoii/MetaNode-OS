@@ -1,0 +1,16 @@
+[Unit]
+Description=Frostbyte Control Plane Worker
+After=network.target frostbyte-api.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/frostbyte-control-plane
+EnvironmentFile=-/etc/frostbyte-control-plane/env
+ExecStart=/usr/bin/npm --workspace apps/worker start
+Restart=on-failure
+RestartSec=5
+User=frostbyte
+Group=frostbyte
+
+[Install]
+WantedBy=multi-user.target

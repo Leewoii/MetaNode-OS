@@ -15,6 +15,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - name: Verify launcher icons
+        shell: pwsh
+        run: |
+          git rev-parse HEAD
+          Get-ChildItem apps/launcher/src-tauri/icons
+          if (!(Test-Path apps/launcher/src-tauri/icons/icon.png)) {
+            throw "Missing apps/launcher/src-tauri/icons/icon.png"
+          }
+          if (!(Test-Path apps/launcher/src-tauri/icons/icon.ico)) {
+            throw "Missing apps/launcher/src-tauri/icons/icon.ico"
+          }
       - uses: actions/setup-node@v4
         with:
           node-version: 22

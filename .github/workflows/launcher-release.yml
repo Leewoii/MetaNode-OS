@@ -1,0 +1,92 @@
+name: Launcher Installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Optional release tag to publish, for example launcher-v0.1.0. Leave empty to build artifacts only."
+        required: false
+        type: string
+      prerelease:
+        description: "Mark the GitHub Release as a prerelease."
+        required: false
+        default: false
+        type: boolean
+  push:
+    tags:
+      - "launcher-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-launcher:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify launcher icons
+        shell: pwsh
+        run: |
+          git rev-parse HEAD
+          Get-ChildItem apps/launcher/src-tauri/icons
+          if (!(Test-Path apps/launcher/src-tauri/icons/icon.png)) {
+            throw "Missing apps/launcher/src-tauri/icons/icon.png"
+          }
+          if (!(Test-Path apps/launcher/src-tauri/icons/icon.ico)) {
+            throw "Missing apps/launcher/src-tauri/icons/icon.ico"
+          }
+      - name: Verify release build configuration
+        shell: pwsh
+        run: |
+          if ("${{ vars.METANODE_DISTRIBUTION_URL }}" -eq "") {
+            throw "Set repository variable METANODE_DISTRIBUTION_URL to your deployed distribution API URL before building launcher releases."
+          }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux desktop dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+      - run: npm ci
+      - name: Build Tauri launcher
+        env:
+          METANODE_GATE_URL: ${{ vars.METANODE_GATE_URL || 'https://metanode-access-gate-frost.leeroi-c25.workers.dev' }}
+          METANODE_DISTRIBUTION_URL: ${{ vars.METANODE_DISTRIBUTION_URL }}
+          METANODE_RELEASE_PUBLIC_KEY_BASE64: ${{ secrets.METANODE_RELEASE_PUBLIC_KEY_BASE64 }}
+        run: npm --workspace apps/launcher run tauri:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: metanode-launcher-${{ matrix.os }}
+          path: |
+            apps/launcher/src-tauri/target/release/bundle/**/*.msi
+            apps/launcher/src-tauri/target/release/bundle/**/*.deb
+            apps/launcher/src-tauri/target/release/bundle/**/*.AppImage
+
+  publish-release:
+    needs: build-launcher
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/launcher-v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag != '')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+      - name: List release assets
+        run: find release-assets -maxdepth 5 -type f -print
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          name: MetaNode OS Launcher ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release_tag || github.ref_name }}
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease == 'true' }}
+          files: |
+            release-assets/**/*.msi
+            release-assets/**/*.deb
+            release-assets/**/*.AppImage

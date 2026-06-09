@@ -2,13 +2,7 @@
   <img src="docs/assets/metanode-os-logo.png" alt="MetaNode OS logo" width="96" />
 </p>
 
-# MetaNode OS Core
-
-```text
---------------------------------------------------------
-        MetaNode OS Core | local AI workspace runtime
---------------------------------------------------------
-```
+# MetaNode OS Core | local AI workspace runtime
 
 MetaNode OS is a private, local-first AI automation workspace. It gives you a ChatGPT/Claude-like chat surface, but binds it to a visual workflow canvas, local model providers, tools, credentials, approvals, runs, and agent assets that live under your control.
 

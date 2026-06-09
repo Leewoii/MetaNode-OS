@@ -19,3 +19,4 @@ docker-compose.core.yml
 apps/launcher/src-tauri/gen/
 apps/launcher/src-tauri/target/
 metanode-os-core-private/
+package-lock.json

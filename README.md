@@ -141,7 +141,3 @@ data/
 ## Data
 
 Local runtime data is stored under `data/` unless a database URL or state-file override is configured. That folder is intentionally ignored by Git because it can contain users, sessions, workflow state, credentials metadata, runs, approvals, and local development data.
-
-## License
-
-Private MetaNode OS core source. Distribution is through signed release assets only.

@@ -109,7 +109,7 @@ Most setup happens inside the app. Use environment files for deployment-level de
 | `VITE_API_URL` | Web app API endpoint override. |
 | `AUTH_SECRET` | API token signing secret. |
 | `DATABASE_URL` | Optional Postgres connection string. Without it, local file-backed state is used. |
-| `BARYON_STATE_FILE` | Local memory-store state file path override. |
+| `META_STATE_FILE` | Local memory-store state file path override. |
 | `OLLAMA_BASE_URL` | Ollama endpoint for local models. |
 | `OLLAMA_DEFAULT_MODEL` | Default Ollama model name. |
 | `OPENAI_API_KEY` | Optional OpenAI provider key. |

@@ -2,7 +2,7 @@
   <img src="docs/assets/metanode-os-logo.png" alt="MetaNode OS logo" width="96" />
 </p>
 
-# MetaNode OS Core | local AI workspace runtime
+# MetaNode OS | local AI workspace runtime
 
 MetaNode OS is a private, local-first AI automation workspace. It gives you a ChatGPT/Claude-like chat surface, but binds it to a visual workflow canvas, local model providers, tools, credentials, approvals, runs, and agent assets that live under your control.
 
@@ -57,13 +57,6 @@ This repository is the private core bundle source that the public launcher downl
 ![Workspace](docs/assets/metanode-os-workspace.png)
 
 ## Quick Start
-
-Defaults work locally after install. Start the API, worker, and web app together:
-
-```powershell
-npm.cmd install
-npm.cmd run dev
-```
 
 Open:
 
